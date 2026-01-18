@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandSource;
+import net.minecraft.command.DefaultPermissions;
 import net.minecraft.command.argument.CommandFunctionArgumentType;
 import static net.minecraft.command.argument.CommandFunctionArgumentType.commandFunction;
 import static net.minecraft.server.command.CommandManager.argument;
@@ -43,7 +44,7 @@ public final class EditFunctionCommand {
 
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
 		dispatcher.register(literal("editfunction")
-			.requires(source -> source.hasPermissionLevel(2))
+			.requires(source -> source.getPermissions().hasPermission(DefaultPermissions.GAMEMASTERS))
 			.then(argument("name", commandFunction())
 				.suggests(SUGGESTION_PROVIDER)
 				.executes(ctx -> {

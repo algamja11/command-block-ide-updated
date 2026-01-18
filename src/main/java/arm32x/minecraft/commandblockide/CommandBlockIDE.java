@@ -12,6 +12,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.command.DefaultPermissions;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -31,7 +32,7 @@ public final class CommandBlockIDE implements ModInitializer {
 		final PacketMerger functionMerger = new PacketMerger();
 		PayloadTypeRegistry.playC2S().register(Packets.APPLY_FUNCTION, ApplyFunctionPayload.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(Packets.APPLY_FUNCTION, (payload, context) -> {
-			if (!context.player().hasPermissionLevel(2)) {
+			if (!context.player().getPermissions().hasPermission(DefaultPermissions.GAMEMASTERS)) {
 				return;
 			}
 			Optional<PacketByteBuf> maybeMerged = Optional.empty();

@@ -19,6 +19,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Position;
 import net.minecraft.world.CommandBlockExecutor;
 
 public final class CommandBlockEditor extends CommandEditor {
@@ -67,7 +68,7 @@ public final class CommandBlockEditor extends CommandEditor {
 		if (isLoaded() && isDirty()) {
 			CommandBlockExecutor executor = blockEntity.getCommandExecutor();
 			networkHandler.sendPacket(new UpdateCommandBlockC2SPacket(
-				BlockPos.ofFloored(executor.getPos()),
+				BlockPos.ofFloored(blockEntity.getPos().toCenterPos()),
 				getSingleLineCommand(),
 				typeButton.getBlockType(),
 				trackOutputButton.isTrackingOutput(),
@@ -101,7 +102,7 @@ public final class CommandBlockEditor extends CommandEditor {
 			client.isInSingleplayer()
 				? Objects.requireNonNull(client.getServer()).getSaveProperties().getLevelName()
 				: Objects.requireNonNull(client.getCurrentServerEntry()).name,
-			BlockPos.ofFloored(executor.getPos())
+			BlockPos.ofFloored(blockEntity.getPos().toCenterPos())
 		));
 		typeButton.setBlockType(blockEntity.getCommandBlockType());
 		typeButton.setConditional(blockEntity.isConditionalCommandBlock());

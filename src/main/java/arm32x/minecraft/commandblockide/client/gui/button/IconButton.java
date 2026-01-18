@@ -43,10 +43,10 @@ public abstract class IconButton extends PressableWidget {
 	}
 
 	@Override
-	public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void drawIcon(DrawContext context, int mouseX, int mouseY, float delta) {
 		boolean drawsBackground = drawsBackground();
 		if (drawsBackground) {
-			super.renderWidget(context, mouseX, mouseY, delta);
+			super.drawButton(context);
 		}
 
 		var texture = getTexture();
