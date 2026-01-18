@@ -34,6 +34,7 @@ dependencies {
 
     val msgpack_java_version: String by project
     implementation("org.msgpack:msgpack-core:${msgpack_java_version}")
+    include("org.msgpack:msgpack-core:${msgpack_java_version}")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     val junit_version: String by project
