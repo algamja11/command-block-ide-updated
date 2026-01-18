@@ -1,7 +1,7 @@
 @file:Suppress("LocalVariableName")
 
 plugins {
-    id("com.github.johnrengelman.shadow")
+//    id("com.github.johnrengelman.shadow")
     id("com.gladed.androidgitversion")
     id("fabric-loom")
     `java-library`
@@ -15,7 +15,7 @@ androidGitVersion {
 group = "arm32x.minecraft"
 version = androidGitVersion.name()
 
-configurations.implementation.get().extendsFrom(configurations["shadow"])
+//configurations.implementation.get().extendsFrom(configurations["shadow"])
 
 repositories {
     mavenCentral()
@@ -33,14 +33,16 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_version")
 
     val msgpack_java_version: String by project
-    shadow("org.msgpack:msgpack-core:${msgpack_java_version}")
+    implementation("org.msgpack:msgpack-core:${msgpack_java_version}")
 
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     val junit_version: String by project
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junit_version}")
     val jqwik_version: String by project
     testImplementation("net.jqwik:jqwik:${jqwik_version}")
     val assertj_version: String by project
     testImplementation("org.assertj:assertj-core:${assertj_version}")
+
 }
 
 java {
@@ -76,14 +78,6 @@ tasks.jar {
     from("LICENSE")
 }
 
-tasks.shadowJar {
-    configurations = listOf(project.configurations.shadow.get())
-}
-
-tasks.remapJar {
-    dependsOn(tasks.shadowJar)
-    inputFile.set(tasks.shadowJar.get().archiveFile)
-    doLast {
-        tasks.shadowJar.get().archiveFile.get().asFile.delete()
-    }
+tasks.test {
+    useJUnitPlatform()
 }
